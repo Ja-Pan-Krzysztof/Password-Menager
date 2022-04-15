@@ -14,13 +14,9 @@ def main():
 
     print('''What do you want to do?
         [1] \t Create a new key
-        [3] \t Create new password file
-        [5] \t Add a new password to existing password file
-
-        [2] \t Load an existing key
-        [4] \t Load existing password file
-        [6] \t Open exidting password file
-        [7] \t Get a password
+        [2] \t Create new password file
+        [3] \t Add a new password to existing password file
+        [4] \t Get a password
         
         [q] \t Quit
     ''')
@@ -28,7 +24,7 @@ def main():
     done = False
 
     while not done:
-        choice = str(input('Enter your choice : '))
+        choice = str(input('\nEnter your choice : '))
         match choice:
             case '1':
                 path = input('Enter path : ')
@@ -36,17 +32,9 @@ def main():
 
             case '2':
                 path = input('Enter path : ')
-                pm.load_key(path)
+                pm.create_password_file(path)
 
             case '3':
-                path = input('Enter path : ')
-                pm.create_password_file(path, password)
-
-            case '4':
-                path = input('Enter path : ')
-                pm.load_password_file(path)
-
-            case '5':
                 site = input('Enter site : ')
                 password = input('Enter the password ( Enter `g_password` to use it ) : ')
                 if password == 'g_password':
@@ -58,19 +46,15 @@ def main():
                         pm.add_password(site, p.generate_pass())
 
                     except ValueError:
-                        print('Invalid lenght')
+                        print('Invalid lenght!')
                         continue
 
                 else:
                     pm.add_password(site, password)
 
-            case '6':
-                path = input('Enter path : ')
-                pm.open_password_file(path)
-
-            case '7':
+            case '4':
                 site = input('What site do you want : ')
-                print(f'Passsword for {site} is {pm.get_password(site)}')
+                print(f'\nPasssword for \033[35m{site}\033[0m is \033[35m{pm.get_password(site)}\033[0m')
 
             case 'q':
                 done = True

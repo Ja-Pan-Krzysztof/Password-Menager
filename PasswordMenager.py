@@ -25,7 +25,7 @@ class PasswordMenager:
             return False
 
     def create_key(self, path):
-        extention = '.key'
+        extention = 'key'
         if self.invalid_path(path, extention):
             self.key = Fernet.generate_key()
             with open(path, 'wb') as f:
@@ -39,14 +39,19 @@ class PasswordMenager:
             self.key = f.read()
 
     def create_password_file(self, path, initial_values=None):
-        self.password_file = path
+        extention = 'pass'
+        if self.invalid_path(path, extention):
+            self.password_file = path
 
-        if initial_values is not None:
-            for key, value in initial_values.items():
-                self.add_password(key, value)
+            if initial_values is not None:
+                for key, value in initial_values.items():
+                    self.add_password(key, value)
+
+            else:
+                system(f'type nul > {path}')
 
         else:
-            system(f'type nul > {path}')
+            print('Invalid path !')
 
     def load_password_file(self, path):
         with open(path, 'r') as f:
@@ -55,6 +60,9 @@ class PasswordMenager:
                 self.password_dict[site] = Fernet(self.key).decrypt(encrypted.encode()).decode()
 
     def add_password(self, site, password: str):
+        self.load_key(str(input('Enter a path key : ')))
+        self.open_password_file(str(input('Enter a path pass : ')))
+
         self.password_dict[site] = password
 
         if self.password_file is not None:
@@ -67,7 +75,14 @@ class PasswordMenager:
             self.password_file = path
 
         except ValueError:
-            print('Invalid path !')
+            print('Invalid path !\n')
 
     def get_password(self, site):
-        return self.password_dict[site]
+        self.load_key(str(input('Enter a key path : ')))
+        self.load_password_file(str(input('Enter a password path : ')))
+
+        try:
+            return self.password_dict[site]
+
+        except:
+            return None
