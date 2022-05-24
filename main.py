@@ -1,5 +1,6 @@
 from PasswordMenager import PasswordMenager
 from GeneratePassword import GeneratePassword
+from Gui.gui import AppGui
 
 generated_password = ''
 
@@ -65,4 +66,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    gui = AppGui()
+    gui.mainloop()
