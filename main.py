@@ -1,6 +1,10 @@
 from PasswordMenager import PasswordMenager
 from GeneratePassword import GeneratePassword
+
+from Gui.guiAddMainPass import AddMainPass
 from Gui.gui import AppGui
+
+import os
 
 generated_password = ''
 
@@ -66,5 +70,14 @@ def main():
 
 
 if __name__ == '__main__':
-    gui = AppGui()
-    gui.mainloop()
+    key = os.listdir()
+    if 'main.key' not in key:
+        add = AddMainPass()
+        add.mainloop()
+
+        gui = AppGui()
+        gui.mainloop()
+
+    else:
+        gui = AppGui()
+        gui.mainloop()

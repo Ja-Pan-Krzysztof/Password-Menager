@@ -1,6 +1,8 @@
 import tkinter as tk
+
 from cryptography.fernet import Fernet
 from functools import partial
+import hashlib
 
 
 class AppGui(tk.Tk):
@@ -41,22 +43,17 @@ class AppGui(tk.Tk):
         a = 45
         b = 0
         for key, value in self.password_dict.items():
-            site = tk.Button(self.l_frame, text=f'{key}', relief=tk.RIDGE, command=partial(self.command_button, b))
+            site = tk.Button(self.l_frame, text=f'{key}', relief=tk.RIDGE, command=partial(self.command_button, key))
             site.place(height=25, width=190, x=5, y=a)
 
             a += 27
             b += 1
 
-    def command_button(self, pass_num):
-        a = 0
-        for key, value in self.password_dict.items():
-            if a == pass_num:
-                pass_gui = PassGui(key)
-                pass_gui.mainloop()
+    def command_button(self, site):
+        pg = PassGui(site)
+        pg.mainloop()
 
-                return [pass_num, self.show_passwords(pass_gui.password)]
-
-            a += 1
+        print(pg.option)
 
     '''def show_passwords(self, passwords: list):
         num_pass = passwords[0]
@@ -123,10 +120,21 @@ class PassGui(tk.Tk):
         self.quit()
 
     def ok(self):
-        self.option = 1
         self.password = self.enter.get()
-        self.destroy()
-        self.quit()
+
+        with open('pass.txt', 'r') as f:
+            for line in f:
+                password = hashlib.sha1(str(self.password).encode())
+
+                if line == password.hexdigest():
+                    self.option = 1
+
+                else:
+                    print(line)
+                    print(password.hexdigest())
+
+            self.destroy()
+            self.quit()
 
 
 
