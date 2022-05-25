@@ -5,6 +5,7 @@ from functools import partial
 import hashlib
 
 from PasswordMenager import PasswordMenager
+from Gui.guiAddPassword import AddPassword
 
 
 class AppGui(tk.Tk):
@@ -54,12 +55,13 @@ class AppGui(tk.Tk):
             a += 27
             b += 1
 
+        self.button_add = tk.Button(self.r_frame, text='Add password', relief=tk.SOLID, bd=1, command=self.add)
+        self.button_add.place(width=150, height=30, y=525, x=145)
+
     def command_button(self, site):
         pg = PassGui(site)
         pg.mainloop()
 
-        print(pg.option)
-        print(pg.site)
         if pg.option == 1:
             self.show_password(site)
 
@@ -70,6 +72,13 @@ class AppGui(tk.Tk):
             self.r_frame,
             text=f'{site} : {password}'
         ).place(height=50, width=290, x=5, y=35)
+
+    def add(self):
+        ap = AddPassword()
+        ap.mainloop()
+
+        if ap.site is not None and ap.password is not None:
+            self.pm.add_password(ap.site, ap.password, 'main.key', 'all.pass')
 
 
 class PassGui(tk.Tk):
@@ -130,7 +139,3 @@ class PassGui(tk.Tk):
 
             self.destroy()
             self.quit()
-
-
-
-        # relief - obramowania

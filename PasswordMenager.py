@@ -59,9 +59,12 @@ class PasswordMenager:
                 site, encrypted = line.split(':')
                 self.password_dict[site] = Fernet(self.key).decrypt(encrypted.encode()).decode()
 
-    def add_password(self, site, password: str):
-        self.load_key(str(input('Enter a path key : ')))
-        self.open_password_file(str(input('Enter a path pass : ')))
+    def add_password(self, site, password: str, key, pass_f):
+        #self.load_key(str(input('Enter a path key : ')))
+        #self.open_password_file(str(input('Enter a path pass : ')))
+
+        self.load_key(str(key))
+        self.open_password_file(str(pass_f))
 
         self.password_dict[site] = password
 
