@@ -3,6 +3,7 @@ from tkinter import messagebox
 
 from functools import partial
 import hashlib
+import os
 
 from PasswordMenager import PasswordMenager
 from Gui.guiAddPassword import AddPassword
@@ -14,9 +15,8 @@ class AppGui(tk.Tk):
         self.password_dict = {}
         self.pm = PasswordMenager()
 
-        '''file = open('main.key', 'r')
-        self.key = file.readline()
-        file.close()'''
+        if not os.path.exists('all.pass'):
+            os.system(f'type nul > all.pass')
 
         self.title('Password Menager')
         self.geometry('800x600-2000+50')
@@ -41,6 +41,19 @@ class AppGui(tk.Tk):
         self.pass_label = tk.Label(self.r_frame, text='Password')
         self.pass_label.place(height=25, width=290, x=5, y=5)
 
+        self.show_sites()
+
+        self.button_add = tk.Button(self.r_frame, text='Add password', relief=tk.SOLID, bd=1, command=self.add)
+        self.button_add.place(width=150, height=30, y=525, x=145)
+
+    def command_button(self, site):
+        pg = PassGui(site)
+        pg.mainloop()
+
+        if pg.option == 1:
+            self.show_password(site)
+
+    def show_sites(self):
         with open('all.pass', 'r') as f:
             for line in f:
                 site, password = line.split(':')
@@ -54,16 +67,6 @@ class AppGui(tk.Tk):
 
             a += 27
             b += 1
-
-        self.button_add = tk.Button(self.r_frame, text='Add password', relief=tk.SOLID, bd=1, command=self.add)
-        self.button_add.place(width=150, height=30, y=525, x=145)
-
-    def command_button(self, site):
-        pg = PassGui(site)
-        pg.mainloop()
-
-        if pg.option == 1:
-            self.show_password(site)
 
     def show_password(self, site):
         password = self.pm.get_password(site, 'main.key', 'all.pass')
@@ -79,6 +82,8 @@ class AppGui(tk.Tk):
 
         if ap.site is not None and ap.password is not None:
             self.pm.add_password(ap.site, ap.password, 'main.key', 'all.pass')
+
+        self.show_sites()
 
 
 class PassGui(tk.Tk):
