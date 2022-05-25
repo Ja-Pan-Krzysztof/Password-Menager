@@ -77,9 +77,12 @@ class PasswordMenager:
         except ValueError:
             print('Invalid path !\n')
 
-    def get_password(self, site):
-        self.load_key(str(input('Enter a key path : ')))
-        self.load_password_file(str(input('Enter a password path : ')))
+    def get_password(self, site, key, pass_f):
+        #self.load_key(str(input('Enter a key path : ')))
+        #self.load_password_file(str(input('Enter a password path : ')))
+
+        self.load_key(str(key))
+        self.load_password_file(str(pass_f))
 
         try:
             return self.password_dict[site]

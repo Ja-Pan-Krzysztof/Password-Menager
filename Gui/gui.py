@@ -1,16 +1,21 @@
 import tkinter as tk
+from tkinter import messagebox
 
-from cryptography.fernet import Fernet
 from functools import partial
 import hashlib
+
+from PasswordMenager import PasswordMenager
 
 
 class AppGui(tk.Tk):
     def __init__(self):
         super(AppGui, self).__init__()
         self.password_dict = {}
-        self.key = 'HD_u6rEZu_3Ro-ntk2lz_V1oKmiAOEFZ3nxuRT6Uip0='
-        self.password = 'Mnichuj'
+        self.pm = PasswordMenager()
+
+        '''file = open('main.key', 'r')
+        self.key = file.readline()
+        file.close()'''
 
         self.title('Password Menager')
         self.geometry('800x600-2000+50')
@@ -32,7 +37,7 @@ class AppGui(tk.Tk):
         self.site_label = tk.Label(self.l_frame, text='Sites')
         self.site_label.place(height=25, width=190, x=5, y=5)
 
-        self.pass_label = tk.Label(self.r_frame, text='Passwords')
+        self.pass_label = tk.Label(self.r_frame, text='Password')
         self.pass_label.place(height=25, width=290, x=5, y=5)
 
         with open('all.pass', 'r') as f:
@@ -54,26 +59,17 @@ class AppGui(tk.Tk):
         pg.mainloop()
 
         print(pg.option)
+        print(pg.site)
+        if pg.option == 1:
+            self.show_password(site)
 
-    '''def show_passwords(self, passwords: list):
-        num_pass = passwords[0]
-        password = passwords[1]
-        a = 45
+    def show_password(self, site):
+        password = self.pm.get_password(site, 'main.key', 'all.pass')
 
-        if password == self.password:
-            with open('all.pass', 'r') as f:
-                for line in f:
-                    site, encrypted = line.split(':')
-                    self.password_dict[site] = Fernet(self.key).decrypt(encrypted.encode()).decode()
-
-            for key, value in self.password_dict.items():
-                pas = tk.Label(self.r_frame, text=f'{value}', relief=tk.RIDGE)
-                pas.place(height=25, width=290, x=5, y=a)
-
-                a += 27
-
-        else:
-            print('False')'''
+        tk.Label(
+            self.r_frame,
+            text=f'{site} : {password}'
+        ).place(height=50, width=290, x=5, y=35)
 
 
 class PassGui(tk.Tk):
@@ -130,8 +126,7 @@ class PassGui(tk.Tk):
                     self.option = 1
 
                 else:
-                    print(line)
-                    print(password.hexdigest())
+                    messagebox.showerror('Bad password', 'Unfortunately, the password is wrong !')
 
             self.destroy()
             self.quit()

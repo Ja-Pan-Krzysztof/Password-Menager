@@ -56,7 +56,7 @@ class AddMainPass(tk.Tk):
             pm.create_key('main.key')
 
             with open('pass.txt', 'w') as f:
-                password = hashlib.sha1(str(self.enter1).encode())
+                password = hashlib.sha1(str(self.enter1.get()).encode())
                 f.write(password.hexdigest())
 
             self.destroy()
