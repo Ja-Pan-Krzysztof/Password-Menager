@@ -18,8 +18,14 @@ class AppGui(tk.Tk):
         if not os.path.exists('all.pass'):
             os.system(f'type nul > all.pass')
 
+        self.y_conrinate = self.winfo_screenheight()
+        self.x_conrinate = self.winfo_screenwidth()
+
+        self.x_conrinate = (self.x_conrinate / 2) - (800 / 2)
+        self.y_conrinate = (self.y_conrinate / 2) - (600 / 2)
+
         self.title('Password Menager')
-        self.geometry('800x600-2000+50')
+        self.geometry(f'800x600+{int(self.x_conrinate)}+{int(self.y_conrinate)}')
         self.configure(background='#FFF5E4')
         self.resizable(False, False)
         self.iconbitmap('Gui/fortnite.ico')
@@ -94,7 +100,8 @@ class PassGui(tk.Tk):
         super(PassGui, self).__init__()
 
         self.title(f'Enter Password ({self.site})')
-        self.geometry('300x120-2300+200')
+        self.geometry('300x120')
+        self.eval('tk::PlaceWindow . center')
         self.configure(background='#44F5E4')
         self.resizable(False, False)
         self.iconbitmap('Gui/fortnite.ico')

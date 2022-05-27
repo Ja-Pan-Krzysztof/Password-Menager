@@ -9,10 +9,12 @@ from PasswordMenager import PasswordMenager
 class AddMainPass(tk.Tk):
     def __init__(self):
         self.password = None
+        self.is_close = True
         super(AddMainPass, self).__init__()
 
         self.title('Create New Password')
-        self.geometry('300x120-2300+200')
+        self.geometry('300x120')
+        self.eval('tk::PlaceWindow . center')
         self.configure(background='pink')
         self.resizable(False, False)
         self.iconbitmap('Gui/fortnite.ico')
@@ -47,10 +49,12 @@ class AddMainPass(tk.Tk):
         self.button_ok.place(width=50, height=20, y=5, x=240)
 
     def close(self):
+        self.is_close = True
         self.destroy()
         self.quit()
 
     def ok(self):
+        self.is_close = False
         if self.enter1.get() == self.enter2.get():
             pm = PasswordMenager()
             pm.create_key('main.key')

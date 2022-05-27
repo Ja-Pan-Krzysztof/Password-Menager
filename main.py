@@ -75,6 +75,9 @@ if __name__ == '__main__':
         add = AddMainPass()
         add.mainloop()
 
+        if add.is_close is True:
+            quit()
+
         gui = AppGui()
         gui.mainloop()
 

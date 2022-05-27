@@ -8,7 +8,8 @@ class AddPassword(tk.Tk):
         super(AddPassword, self).__init__()
 
         self.title('Create New Password')
-        self.geometry('300x120-2300+200')
+        self.geometry('300x120')
+        self.eval('tk::PlaceWindow . center')
         self.configure(background='pink')
         self.resizable(False, False)
         self.iconbitmap('Gui/fortnite.ico')
